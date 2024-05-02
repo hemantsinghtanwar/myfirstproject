@@ -18,7 +18,7 @@ jobs:
       id: create_pr
       uses: peter-evans/create-pull-request@v3
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.LOCAL_TOKEN }}
         title: 'Code Review: Changes from dev branch'
         body: |
           Hi team,
