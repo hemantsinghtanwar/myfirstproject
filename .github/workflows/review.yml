@@ -30,4 +30,4 @@ jobs:
           Thank you.
 
         labels: 'code review'
-
+         draft: false
