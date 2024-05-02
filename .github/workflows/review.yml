@@ -1,0 +1,33 @@
+name: Generate PR for Code Review
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  generate_pr:
+    name: Generate PR for Code Review
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      
+    - name: Create Pull Request
+      id: create_pr
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        title: 'Code Review: Changes from dev branch'
+        body: |
+          Hi team,
+
+          This pull request contains changes from the dev branch and requires review and approval before merging to the main branch.
+
+          Please review the changes and provide your feedback.
+
+          Thank you.
+
+        labels: 'code review'
+
