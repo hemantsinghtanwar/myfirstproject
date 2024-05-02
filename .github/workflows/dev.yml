@@ -16,4 +16,5 @@ jobs:
 
     - name: Deploy to Dev Server
       run: |
-        sshpass -p ${{ secrets.DEV_PASS ssh -o StrictHostKeyChecking=no -p 22456 root@103.171.45.35 "cd /var/www/html && git pull origin dev"
+        sshpass -p "${{ secrets.DEV_PASS }}" ssh -o StrictHostKeyChecking=no -p 22456 root@103.171.45.35 "cd /var/www/html && git pull origin dev"
+
