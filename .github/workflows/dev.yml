@@ -9,11 +9,11 @@ jobs:
   deploy_to_dev:
     name: Deploy to Dev Server
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
-      
+
     - name: Deploy to Dev Server
       run: |
         sshpass -p ${{ secrets.DEV_PASS ssh -o StrictHostKeyChecking=no -p 22456 root@103.171.45.35 "cd /var/www/html && git pull origin dev"
