@@ -16,11 +16,5 @@ jobs:
 
     - name: Deploy Code to Dev Server
       run: |
-        # Navigate to the project directory
-        cd /var/www/html/hemant/myfirstproject
-
-        # Pull latest changes from the dev branch
-        git pull origin dev
-
-    # Add any additional steps or commands required for deployment here
+        sshpass -p "${{ secrets.DEV_PASS }}" ssh -o StrictHostKeyChecking=no -p 22456 root@103.171.45.35 "cd /var/www/html/hemant/myfirstproject && git reset --hard HEAD && git clean -df && git pull origin dev"
 
