@@ -1,24 +1,22 @@
-name: Create Pull Request
-
+name: Create Pull Request to Production
+ 
 on:
   push:
     branches:
       - dev
-
+ 
 jobs:
-  create_pull_request:
-    name: Create Pull Request
+  create-pull-request:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        title: 'Merge dev into main'
-        body: 'Automatically generated pull request to merge dev into main.'
-        branch: main
-
+      - name: Checkout code
+        uses: actions/checkout@v2
+ 
+      - name: Create Pull Request
+        uses: repo-sync/pull-request@v2
+        with:
+          github_token: ${{ secrets.LOCAL_TOKEN }}
+          destination_branch: "main"  # Ensure correct target branch
+          source_branch: "dev"
+          pr_title: "Deploying changes to main"
+          pr_body: "A new pull request to merge changes from dev to main"
