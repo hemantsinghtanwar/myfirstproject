@@ -1,0 +1,39 @@
+name: Generate PR on Push to Dev
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  create_pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      # You may need additional setup steps here based on your project requirements
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate PR
+        id: create_pr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.LOCAL_TOKEN }}
+          commit-message: 'Automated PR: Update from dev branch'
+          title: 'Automated PR: Update from dev branch'
+          body: |
+            This is an automated pull request generated when code is pushed to the dev branch.
+          branch: dev
+          base: dev
+
