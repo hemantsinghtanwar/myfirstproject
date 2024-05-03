@@ -1,33 +1,22 @@
-name: Create PR from develop to master
-
-# run this workflow only
-# when a pull request to "develop" branch is closed
+name: Create Pull Request to Production
+ 
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches:
-      - develop
-
+      - dev
+ 
 jobs:
-    pull-request:
-      runs-on: ubuntu-latest
-      steps:
-      # using v1 as repo-sync/pull-request recommends
-      # https://github.com/repo-sync/pull-request/issues/14
-      # https://github.com/actions/checkout
-      - uses: actions/checkout@v1
-
-      # https://github.com/repo-sync/pull-request
-      # if the pull request has been successfully merged, then create
-      # a PR to "master" branch
-      - name: pull-request
+  create-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+ 
+      - name: Create Pull Request
         uses: repo-sync/pull-request@v2
-        if: github.event.pull_request.merged == true
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          # be explicit about branches
-          source_branch: "develop"
-          destination_branch: "master"
-          pr_title: "develop to master auto PR"
-          pr_body: ":robot: Automated PR from **develop** to **master**"
-          pr_label: "auto-pr"
+          github_token: ${{ secrets.LOCAL_TOKEN }}
+          destination_branch: "main"  # Ensure correct target branch
+          source_branch: "dev"
+          pr_title: "Deploying changes to main"
+          pr_body: "A new pull request to merge changes from dev to main"
