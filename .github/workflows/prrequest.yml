@@ -30,4 +30,5 @@ jobs:
             Thank you.
 
           labels: 'code review'
+          base: 'main' # Specify the target branch explicitly
 
