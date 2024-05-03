@@ -18,5 +18,5 @@ jobs:
 
     - name: Deploy to Production Server
       run: |
-        sshpass -p "${{ secrets.PROD_PASS }}" ssh -o StrictHostKeyChecking=no -p 22456 root@your_prod_server_ip "cd /var/www/html/hemant/myfirstproject && git pull origin main"
+        sshpass -p "${{ secrets.PROD_PASS }}" ssh -o StrictHostKeyChecking=no -p 22456 root@103.152.79.193 "cd /var/www/html/hemant/myfirstproject && git pull origin main"
 
