@@ -1,0 +1,56 @@
+
+
+name: Auto Deploy on Code Push
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  generate_pr:
+    name: Generate PR for Code Review
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      
+    - name: Create Pull Request
+      id: create_pr
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        title: 'Code Review: Changes from dev branch'
+        body: |
+          Hi team,
+
+          This pull request contains changes from the dev branch and requires review and approval before merging to the main branch.
+
+          Please review the changes and provide your feedback.
+
+          Thank you.
+
+        labels: 'code review'
+
+  deploy_to_prod:
+    name: Deploy to Prod Server
+    runs-on: ubuntu-latest
+    needs: generate_pr
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      
+    - name: Debug Pull Request Information
+      run: |
+        echo "Pull Request Number: ${{ github.event.pull_request.number }}"
+        echo "Merged Pull Request Title: ${{ github.event.pull_request.title }}"
+        echo "Base Ref: ${{ github.event.pull_request.base.ref }}"
+        echo "Head Ref: ${{ github.event.pull_request.head.ref }}"
+      
+    - name: Deploy to Prod Server
+      run: |
+        ssh -o StrictHostKeyChecking=no -p 2245 root@103.152.79.193 "cd /var/www/html/hemant/myfirstproject && git pull origin main"
+
